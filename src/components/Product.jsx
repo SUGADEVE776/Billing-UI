@@ -1,4 +1,11 @@
 import { useEffect, useState } from "react";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 function ProductPage() {
   const [products, setProducts] = useState([]);
@@ -27,34 +34,30 @@ function ProductPage() {
       {products.length === 0 ? (
         <p>No products found</p>
       ) : (
-        <table border="1" cellPadding="10" style={{ width: "100%" }}>
-          <thead>
-            <tr>
-              <th>S.No.</th>
-              <th>Product ID</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th>Availability</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product, index) => (
-              <tr key={product.id}>
-                <td>{index + 1}</td> {/* ✅ Serial number */}
-                <td>{product.product_id}</td>
-                <td>{product.name}</td>
-                <td>{product.description}</td>
-                <td>
-                  {product.price
-                    ? `₹${Number(product.price).toFixed(2)}`
-                    : "N/A"}
-                </td>
-                <td>{product.count}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>S.No</TableCell>
+                <TableCell>Id</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Price</TableCell>
+                <TableCell>Description</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {products.map((product, index) => (
+                <TableRow key={product.id}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{product.product_id}</TableCell>
+                  <TableCell>{product.name}</TableCell>
+                  <TableCell>{product.price}</TableCell>
+                  <TableCell>{product.description}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
     </div>
   );
