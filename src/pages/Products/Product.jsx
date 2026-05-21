@@ -1,0 +1,123 @@
+import { LuDownload, LuUpload } from "react-icons/lu";
+import { IoMdAdd } from "react-icons/io";
+import Box from '@mui/material/Box';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import { useState, useEffect } from "react";
+
+import "./Product.css";
+
+
+function ProductPage() {
+
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+
+    const fetchProducts = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+        const response = await fetch(
+          "http://localhost:8000/api/v1/products?page=1&size=10",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await response.json();
+        console.log("Products:", data);
+
+        setProducts(data.results);
+
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+
+  }, []);
+
+
+  return (
+    <>
+      <div className="header-container">
+        <div className="header-left">
+          <h2>Products</h2>
+          <span className="breadcrumbs">
+            <a href="/dashboard">Dashboard</a>
+            <span>&gt;</span>
+            <a href="/products">Products</a>
+          </span>
+        </div>
+
+        <div className="header-right">
+
+          <button className="btn btn-export">
+            <LuDownload className="btn-icon" />
+            Export
+          </button>
+
+          <button className="btn btn-upload">
+            <LuUpload className="btn-icon" />
+            Bulk Upload
+          </button>
+
+          <button className="btn btn-add">
+            <IoMdAdd className="btn-icon" />
+            Add Product
+          </button>
+
+        </div>
+      </div>
+
+      <div className="table-container">
+        <Table>
+
+          <TableHead>
+
+            <TableRow>
+              <TableCell><b>S.no</b></TableCell>
+              <TableCell><b>Product</b></TableCell>
+              <TableCell><b>SKU</b></TableCell>
+              <TableCell><b>Barcode</b></TableCell>
+              <TableCell><b>Brand</b></TableCell>
+              <TableCell><b>Price</b></TableCell>
+              <TableCell><b>Stock</b></TableCell>
+
+            </TableRow>
+
+          </TableHead>
+
+          <TableBody>
+            {products.map((product, index) => (
+              <TableRow key={product.id}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{product.name}</TableCell>
+                <TableCell>{product.sku}</TableCell>
+                <TableCell>{product.barcode}</TableCell>
+                <TableCell>{product.brand}</TableCell>
+                <TableCell>{product.price}</TableCell>
+                <TableCell>{product.stock}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+
+        </Table>
+      </div>
+    </>
+
+  );
+}
+
+export default ProductPage;

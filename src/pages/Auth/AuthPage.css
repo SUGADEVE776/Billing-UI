@@ -1,0 +1,54 @@
+
+/* Full page wrapper */
+.auth-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+}
+
+/* Shared card styles */
+.signup-card,
+.login-card {
+  background: #eeeeeee3;
+  padding: 30px;
+  border-radius: 10px;
+  width: 350px;
+  text-align: center;
+  box-shadow: 0 0 10px #c8c8c8;
+  height: auto;
+}
+
+/* Inputs */
+.input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #ffffff;
+  color: #333;
+}
+
+/* Button */
+.button {
+  width: 60%;
+  padding: 10px;
+  background: #4e8f3a;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Toggle text */
+.toggle {
+  margin-top: 10px;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+}
+
+h2 {
+  color: rgb(0, 0, 0);
+}

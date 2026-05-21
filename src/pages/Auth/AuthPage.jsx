@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "./AuthPage.css";
-import bgImage from "../assets/login/background.png";
 
 function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -16,7 +15,6 @@ function AuthPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ✅ Single handler for all inputs
   const handleChange = (e) => {
     console.log("Input changed:", e.target.name, e.target.value);
     const { name, value } = e.target;
@@ -44,20 +42,62 @@ function AuthPage() {
   // ✅ Submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    // password validation
     if (!isLogin && formData.password !== formData.confirm_password) {
       setError("Passwords do not match");
       return;
     }
-
+  
     setLoading(true);
     setError("");
-
+  
     try {
-      if (!isLogin) {
-        // 🔥 SIGNUP API
+      // ================= LOGIN =================
+      if (isLogin) {
         const response = await fetch(
-          "http://127.0.0.1:8000/api/v1/signup/",
+          "http://localhost:8000/api/v1/auth/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              phone_number: formData.phone_number,
+              password: formData.password,
+            }),access_token
+          }
+        );
+  
+        const data = await response.json();
+  
+        console.log("Login Response:", data);
+  
+        if (!response.ok) {
+          throw new Error(data.message || "Login failed");
+        }
+  
+        // save token
+        localStorage.setItem(
+          "access_token",
+          data.data.access_token
+        );
+  
+        // save user
+        localStorage.setItem(
+          "user",
+          JSON.stringify(data.data.user)
+        );
+
+  
+        // redirect
+        window.location.href = "/dashboard";
+      }
+  
+      // ================= SIGNUP =================
+      else {
+        const response = await fetch(
+          "http://localhost:8000/api/v1/auth/register",
           {
             method: "POST",
             headers: {
@@ -71,15 +111,18 @@ function AuthPage() {
             }),
           }
         );
-
+  
         const data = await response.json();
-
+  
+        console.log("Signup Response:", data);
+  
         if (!response.ok) {
           throw new Error(data.message || "Signup failed");
         }
-
+  
         alert("Signup successful! Please login.");
-
+  
+        // clear form
         setFormData({
           first_name: "",
           last_name: "",
@@ -87,16 +130,9 @@ function AuthPage() {
           password: "",
           confirm_password: "",
         });
-
+  
+        // switch to login
         setIsLogin(true);
-      } else {
-        // 🔥 LOGIN (replace with your API later)
-        console.log("Login data:", {
-          phone_number: formData.phone_number,
-          password: formData.password,
-        });
-
-        alert("Login API not connected yet");
       }
     } catch (err) {
       console.error(err);
@@ -106,17 +142,16 @@ function AuthPage() {
     }
   };
 
+
+
   return (
-    <div
-      className="container"
-      style={{ backgroundImage: `url(${bgImage})` }}
-    >
-      <div className="overlay">
-        <div className="card">
+    <>
+      <div className="auth-container">
+        <div className={isLogin ? "login-card" : "signup-card"}>
           <h2>{isLogin ? "Login" : "Sign Up"}</h2>
 
           <form onSubmit={handleSubmit}>
-            {/* SIGNUP FIELDS */}
+
             {!isLogin && (
               <>
                 <input
@@ -125,8 +160,7 @@ function AuthPage() {
                   placeholder="First Name"
                   className="input"
                   value={formData.first_name}
-                  onChange={handleChange}
-                />
+                  onChange={handleChange} />
 
                 <input
                   type="text"
@@ -134,8 +168,7 @@ function AuthPage() {
                   placeholder="Last Name"
                   className="input"
                   value={formData.last_name}
-                  onChange={handleChange}
-                />
+                  onChange={handleChange} />
               </>
             )}
 
@@ -145,7 +178,7 @@ function AuthPage() {
               name="phone_number"
               placeholder="Mobile Number"
               className="input"
-              value={formData.mobile}
+              value={formData.phone_number}
               onChange={handleChange}
             />
 
@@ -155,8 +188,7 @@ function AuthPage() {
               placeholder="Password"
               className="input"
               value={formData.password}
-              onChange={handleChange}
-            />
+              onChange={handleChange} />
 
             {/* CONFIRM PASSWORD */}
             {!isLogin && (
@@ -166,8 +198,7 @@ function AuthPage() {
                 placeholder="Confirm Password"
                 className="input"
                 value={formData.confirm_password}
-                onChange={handleChange}
-              />
+                onChange={handleChange} />
             )}
 
             {/* ERROR */}
@@ -182,8 +213,8 @@ function AuthPage() {
               {loading
                 ? "Please wait..."
                 : isLogin
-                ? "Login"
-                : "Sign Up"}
+                  ? "Login"
+                  : "Sign Up"}
             </button>
           </form>
 
@@ -200,8 +231,7 @@ function AuthPage() {
               : "Already have an account? Login"}
           </p>
         </div>
-      </div>
-    </div>
+      </div></>
   );
 }
 
