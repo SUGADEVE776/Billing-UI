@@ -9,11 +9,16 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { useState, useEffect } from "react";
+import { FaEye } from "react-icons/fa";
+import { RiDeleteBin2Fill, RiEdit2Fill } from "react-icons/ri";
+import AddCustomerModal from "../../components/modals/addCustomer";
+import "./Customers.css";
 
 function CustomersPage() {
 
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
 
@@ -79,7 +84,7 @@ function CustomersPage() {
             Bulk Upload
           </button>
 
-          <button className="btn btn-add">
+          <button className="btn btn-add" onClick={()=>setOpenModal(true)}>
             <IoMdAdd className="btn-icon" />
             Add Customer
           </button>
@@ -96,6 +101,7 @@ function CustomersPage() {
               <TableCell><b>Email</b></TableCell>
               <TableCell><b>Phone No</b></TableCell>
               <TableCell><b>GST</b></TableCell>
+              <TableCell><b>Actions</b></TableCell>
 
             </TableRow>
 
@@ -109,13 +115,28 @@ function CustomersPage() {
                 <TableCell>{customer.email}</TableCell>
                 <TableCell>{customer.phone_number}</TableCell>
                 <TableCell>{customer.gst_number}</TableCell>
+                <TableCell>
+                  <div className="action-buttons">
+                    <button className="action-btn">
+                      <FaEye />
+                    </button>
+
+                    <button className="action-btn">
+                      <RiEdit2Fill />
+                    </button>
+
+                    <button className="action-btn">
+                      <RiDeleteBin2Fill />
+                    </button>
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
 
         </Table>
       </div>
-
+      <AddCustomerModal open={openModal} onClose={() => setOpenModal(false)} />
     </>
   );
 

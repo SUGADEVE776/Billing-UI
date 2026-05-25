@@ -134,3 +134,35 @@
 
   margin-bottom: 20px;
 }
+
+
+/* Action Buttons Container */
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Common Action Button */
+.action-btn {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 10px;
+
+  cursor: pointer;
+  color: black;
+
+  font-size: 18px;
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  background-color: #5490da;
+  transform: translateY(-2px);
+}
