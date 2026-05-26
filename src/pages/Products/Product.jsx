@@ -14,35 +14,47 @@ import "./Product.css";
 import AddProductModal from "../../components/modals/addProduct";
 import { FaEye } from "react-icons/fa";
 import { RiDeleteBin2Fill, RiEdit2Fill } from "react-icons/ri";
+import API_BASE_URL from "../../config/api";
 
 function ProductPage() {
   const [products, setProducts] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [page, setPage] = useState(1);
+  const [size] = useState(10);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const token = localStorage.getItem("access_token");
+
         const response = await fetch(
-          "http://localhost:8000/api/v1/products?page=1&size=10",
+          `${API_BASE_URL}api/v1/products?page=${page}&size=${size}`,
           {
             method: "GET",
+
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
           }
         );
+
         const data = await response.json();
+
         console.log("Products:", data);
 
         setProducts(data.results);
+        setTotal(data.total);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
+
     fetchProducts();
-  }, []);
+  }, [page, size]);
+
+  const totalPages = Math.ceil(total / size);
 
   return (
     <>
@@ -134,6 +146,22 @@ function ProductPage() {
             ))}
           </TableBody>
         </Table>
+      </div>
+      <div className="pagination">
+        <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+          Previous
+        </button>
+
+        <span>
+          Page {page} of {totalPages}
+        </span>
+
+        <button
+          disabled={page === totalPages}
+          onClick={() => setPage(page + 1)}
+        >
+          Next
+        </button>
       </div>
       <AddProductModal open={openModal} onClose={() => setOpenModal(false)} />
     </>

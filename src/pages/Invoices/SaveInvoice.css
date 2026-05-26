@@ -1,0 +1,61 @@
+.save-invoice-container {
+
+    margin-top: 30px;
+  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    background: white;
+  
+    padding: 20px;
+  
+    border-radius: 12px;
+  
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  
+  .invoice-total-preview {
+  
+    font-size: 20px;
+    font-weight: 600;
+  
+    color: #111827;
+  }
+  
+  .invoice-total-preview span {
+  
+    margin-left: 10px;
+  
+    color: #2563eb;
+  }
+  
+  .save-invoice-btn {
+  
+    padding: 14px 24px;
+  
+    border: none;
+    border-radius: 10px;
+  
+    background: #2563eb;
+    color: white;
+  
+    font-size: 15px;
+    font-weight: 600;
+  
+    cursor: pointer;
+  
+    transition: 0.3s ease;
+  }
+  
+  .save-invoice-btn:hover {
+  
+    background: #1d4ed8;
+  }
+  
+  .save-invoice-btn:disabled {
+  
+    opacity: 0.7;
+  
+    cursor: not-allowed;
+  }

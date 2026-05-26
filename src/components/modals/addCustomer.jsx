@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./addCustomer.css";
 import { IoCloseSharp } from "react-icons/io5";
+import API_BASE_URL from "../../config/api";
 
 function AddCustomerModal({ open, onClose }) {
 
@@ -35,7 +36,7 @@ function AddCustomerModal({ open, onClose }) {
             const token = localStorage.getItem("access_token");
 
             const response = await fetch(
-                "http://localhost:8000/api/v1/customers",
+                `${API_BASE_URL}api/v1/customers`,
                 {
                     method: "POST",
 

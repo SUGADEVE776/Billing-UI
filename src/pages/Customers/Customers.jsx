@@ -1,35 +1,34 @@
 import { LuDownload, LuUpload } from "react-icons/lu";
 import { IoMdAdd } from "react-icons/io";
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
 import { useState, useEffect } from "react";
 import { FaEye } from "react-icons/fa";
 import { RiDeleteBin2Fill, RiEdit2Fill } from "react-icons/ri";
 import AddCustomerModal from "../../components/modals/addCustomer";
 import "./Customers.css";
+import API_BASE_URL from "../../config/api";
 
 function CustomersPage() {
-
   const [customers, setCustomers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
+  const [page, setPage] = useState(1);
+  const [size] = useState(10);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
-
     const fetchCustomers = async () => {
-
       try {
-
         const token = localStorage.getItem("access_token");
-
+        console.log(page, size);
         const response = await fetch(
-          "http://localhost:8000/api/v1/customer?page=1&size=10",
+          `${API_BASE_URL}api/v1/customer?page=${page}&size=${size}`,
           {
             method: "GET",
             headers: {
@@ -41,24 +40,18 @@ function CustomersPage() {
 
         const data = await response.json();
 
-        console.log("Customers:", data);
-
         setCustomers(data.results);
+        setTotal(data.total);
 
       } catch (error) {
         console.error("Error fetching customers:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchCustomers();
+  }, [page, size]);
 
-  }, []);
-
-  if (loading) {
-    return <h2>Loading customers...</h2>;
-  }
+  const totalPages = Math.ceil(total / size);
 
   return (
     <>
@@ -73,7 +66,6 @@ function CustomersPage() {
         </div>
 
         <div className="header-right">
-
           <button className="btn btn-export">
             <LuDownload className="btn-icon" />
             Export
@@ -84,11 +76,10 @@ function CustomersPage() {
             Bulk Upload
           </button>
 
-          <button className="btn btn-add" onClick={()=>setOpenModal(true)}>
+          <button className="btn btn-add" onClick={() => setOpenModal(true)}>
             <IoMdAdd className="btn-icon" />
             Add Customer
           </button>
-
         </div>
       </div>
 
@@ -96,15 +87,25 @@ function CustomersPage() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell><b>S.no</b></TableCell>
-              <TableCell><b>Customer</b></TableCell>
-              <TableCell><b>Email</b></TableCell>
-              <TableCell><b>Phone No</b></TableCell>
-              <TableCell><b>GST</b></TableCell>
-              <TableCell><b>Actions</b></TableCell>
-
+              <TableCell>
+                <b>S.no</b>
+              </TableCell>
+              <TableCell>
+                <b>Customer</b>
+              </TableCell>
+              <TableCell>
+                <b>Email</b>
+              </TableCell>
+              <TableCell>
+                <b>Phone No</b>
+              </TableCell>
+              <TableCell>
+                <b>GST</b>
+              </TableCell>
+              <TableCell>
+                <b>Actions</b>
+              </TableCell>
             </TableRow>
-
           </TableHead>
 
           <TableBody>
@@ -133,13 +134,27 @@ function CustomersPage() {
               </TableRow>
             ))}
           </TableBody>
-
         </Table>
+      </div>
+      <div className="pagination">
+        <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+          Previous
+        </button>
+
+        <span>
+          Page {page} of {totalPages}
+        </span>
+
+        <button
+          disabled={page === totalPages}
+          onClick={() => setPage(page + 1)}
+        >
+          Next
+        </button>
       </div>
       <AddCustomerModal open={openModal} onClose={() => setOpenModal(false)} />
     </>
   );
-
 }
 
 export default CustomersPage;

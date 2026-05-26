@@ -8,24 +8,21 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import ProtectedRoute from "../src/routes/ProtectedRoute";
 import InvoicePage from "./pages/Invoices/InvoicePage";
 import PublicRoute from "./routes/PublicRoute";
+import InvoiceList from "./pages/Invoices/InvoiceList";
 function App() {
-
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={<Navigate to="/login" replace />}
-        />
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-<Route
-  path="/login"
-  element={
-    <PublicRoute>
-      <AuthPage />
-    </PublicRoute>
-  }
-/>
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <AuthPage />
+            </PublicRoute>
+          }
+        />
 
         <Route
           path="/products"
@@ -46,26 +43,35 @@ function App() {
                 <CustomersPage />
               </Layout>
             </ProtectedRoute>
-
           }
         />
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
-            <Layout>
-              <Dashboard />
-            </Layout>
+              <Layout>
+                <Dashboard />
+              </Layout>
             </ProtectedRoute>
           }
         />
-         <Route
+        <Route
           path="/billing"
           element={
             <Layout>
               <InvoicePage />
             </Layout>
           }
+        />
+        <Route 
+        path="/invoices"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <InvoiceList />
+            </Layout>
+          </ProtectedRoute>
+        }
         />
       </Routes>
     </BrowserRouter>

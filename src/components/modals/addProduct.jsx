@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./addProduct.css";
 import { IoCloseSharp } from "react-icons/io5";
+import API_BASE_URL from "../../config/api";
 
 function AddProductModal({ open, onClose }) {
 
@@ -33,7 +34,7 @@ function AddProductModal({ open, onClose }) {
             const token = localStorage.getItem("access_token");
 
             const response = await fetch(
-                "http://localhost:8000/api/v1/products",
+                `${API_BASE_URL}api/v1/products`,
                 {
                     method: "POST",
 

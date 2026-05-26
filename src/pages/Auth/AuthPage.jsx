@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AuthPage.css";
+import API_BASE_URL from "../../config/api";
 
 function AuthPage() {
 
@@ -76,7 +77,7 @@ function AuthPage() {
       if (isLogin) {
 
         const response = await fetch(
-          "http://localhost:8000/api/v1/auth/login",
+          `${API_BASE_URL}api/v1/auth/login`,
           {
             method: "POST",
             headers: {
@@ -125,7 +126,7 @@ function AuthPage() {
       else {
 
         const response = await fetch(
-          "http://localhost:8000/api/v1/auth/register",
+          `${API_BASE_URL}api/v1/auth/signup`,
           {
             method: "POST",
             headers: {

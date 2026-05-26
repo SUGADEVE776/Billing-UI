@@ -47,14 +47,14 @@ function Sidebar() {
           Customers
         </Link>
 
-        <Link to="/estimates">
-          <HiDocumentText className="nav-icon" />
-          Estimates
-        </Link>
-
         <Link to="/invoices">
           <FaFileInvoiceDollar className="nav-icon" />
           Invoices
+        </Link>
+
+        <Link to="/estimates">
+          <HiDocumentText className="nav-icon" />
+          Estimates
         </Link>
 
         <Link to="/timesheet">

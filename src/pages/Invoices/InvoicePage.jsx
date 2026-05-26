@@ -1,20 +1,27 @@
 import { useState, useEffect } from "react";
 import "./invoicePage.css";
+import InvoiceAddOns from "./InvoiceAddOns";
+import SaveInvoice from "./SaveInvoice";
+import API_BASE_URL from "../../config/api";
 
 function InvoicePage() {
   const [search, setSearch] = useState("");
   const [products, setProducts] = useState([]);
   const [invoiceItems, setInvoiceItems] = useState([]);
+
+  // ADDONS
   const [discount, setDiscount] = useState(0);
   const [tax1, setTax1] = useState(0);
   const [tax2, setTax2] = useState(0);
-  
+
+  // ================= FETCH PRODUCTS =================
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const token = localStorage.getItem("access_token");
+
         const response = await fetch(
-          "http://localhost:8000/api/v1/products?page=1&size=10",
+          `${API_BASE_URL}api/v1/products?page=1&size=50`,
           {
             method: "GET",
             headers: {
@@ -23,29 +30,22 @@ function InvoicePage() {
             },
           }
         );
+
         const data = await response.json();
-        console.log("Products:", data);
 
         setProducts(data.results);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
+
     fetchProducts();
   }, []);
-
-  const subtotal = invoiceItems.reduce((sum, item) => sum + item.total, 0);
-  const discountAmount = (subtotal * discount) / 100;
-  const discountedTotal = subtotal - discountAmount;
-  const tax1Amount = (discountedTotal * tax1) / 100;
-
-  const tax2Amount = (discountedTotal * tax2) / 100;
 
   // ================= ADD PRODUCT =================
   const addProduct = (product) => {
     const exists = invoiceItems.find((item) => item.id === product.id);
 
-    // already exists
     if (exists) {
       const updated = invoiceItems.map((item) => {
         if (item.id === product.id) {
@@ -80,10 +80,12 @@ function InvoicePage() {
   const updateQuantity = (id, quantity) => {
     const updated = invoiceItems.map((item) => {
       if (item.id === id) {
+        const qty = Number(quantity);
+
         return {
           ...item,
-          quantity: Number(quantity),
-          total: item.price * Number(quantity),
+          quantity: qty,
+          total: item.price * qty,
         };
       }
 
@@ -100,153 +102,168 @@ function InvoicePage() {
     setInvoiceItems(filtered);
   };
 
-  // ================= GRAND TOTAL =================
+  // ================= CALCULATIONS =================
+  const subtotal = invoiceItems.reduce((sum, item) => sum + item.total, 0);
+
+  const discountAmount = (subtotal * discount) / 100;
+
+  const discountedTotal = subtotal - discountAmount;
+
+  const tax1Amount = (discountedTotal * tax1) / 100;
+
+  const tax2Amount = (discountedTotal * tax2) / 100;
+
   const grandTotal = discountedTotal + tax1Amount + tax2Amount;
 
   // ================= FILTER PRODUCTS =================
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(search.toLowerCase())
   );
-  console.log("Filtered Products:", filteredProducts);
+
+  const clearInvoice = () => {
+    setInvoiceItems([]);
+
+    setDiscount(0);
+
+    setTax1(0);
+
+    setTax2(0);
+
+    setSearch("");
+  };
+
   return (
     <div className="invoice-container">
-      <h2>Create Invoice</h2>
-
-      {/* SEARCH */}
-      <div className="search-section">
-        <input
-          type="text"
-          placeholder="Search Product"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        {/* SEARCH RESULTS */}
-        {search && (
-          <div className="search-results">
-            {filteredProducts?.map((product) => (
-              <div
-                key={product.id}
-                className="search-item"
-                onClick={() => addProduct(product)}
-              >
-                {product.name} - ₹{product.price}
-              </div>
-            ))}
-          </div>
-        )}
+      <div className="invoice-header">
+        <h2>Create Invoice</h2>
       </div>
 
       {/* TABLE */}
-      <table className="invoice-table">
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Qty</th>
-            <th>Total</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+      <div className="invoice-table-wrapper">
+        <table className="invoice-table">
+          <thead>
+            <tr>
+              <th width="35%">Product</th>
+              <th width="15%">Price</th>
+              <th width="15%">Qty</th>
+              <th width="20%">Total</th>
+              <th width="15%">Action</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          {invoiceItems.map((item) => (
-            <tr key={item.id}>
-              <td>{item.name}</td>
+          <tbody>
+            {/* PRODUCT ROWS */}
+            {invoiceItems.map((item) => (
+              <tr key={item.id}>
+                <td className="product-name">{item.name}</td>
 
-              <td>₹{item.price}</td>
+                <td>₹{item.price}</td>
 
-              <td>
-                <input
-                  type="number"
-                  min="1"
-                  value={item.quantity}
-                  onChange={(e) => updateQuantity(item.id, e.target.value)}
-                  className="qty-input"
-                />
-              </td>
+                <td>
+                  <input
+                    type="number"
+                    min="1"
+                    value={item.quantity}
+                    onChange={(e) => updateQuantity(item.id, e.target.value)}
+                    className="qty-input"
+                  />
+                </td>
 
-              <td>₹{item.total}</td>
+                <td className="price-cell">₹{item.total.toFixed(2)}</td>
 
-              <td>
-                <button
-                  className="remove-btn"
-                  onClick={() => removeProduct(item.id)}
-                >
-                  Remove
-                </button>
+                <td>
+                  <button
+                    className="remove-btn"
+                    onClick={() => removeProduct(item.id)}
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
+
+            {/* ADD ITEM ROW */}
+            <tr className="add-item-row">
+              <td colSpan="5">
+                <div className="table-search-wrapper">
+                  <label className="add-item-label">Add Item</label>
+
+                  <input
+                    type="text"
+                    placeholder="Search product name..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="table-search-input"
+                  />
+
+                  {/* SEARCH RESULTS */}
+                  {search && (
+                    <div className="search-results">
+                      {filteredProducts.length > 0 ? (
+                        filteredProducts.map((product) => (
+                          <div
+                            key={product.id}
+                            className="search-item"
+                            onClick={() => addProduct(product)}
+                          >
+                            <div className="search-product-name">
+                              {product.name}
+                            </div>
+
+                            <div className="search-product-price">
+                              ₹{product.price}
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="no-results">No products found</div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </td>
             </tr>
-          ))}
-        </tbody>
-      </table>
 
-      <div className="invoice-summary">
-        {/* DISCOUNT */}
-        <div className="summary-row">
-          <label>Discount %</label>
-
-          <input
-            type="number"
-            value={discount}
-            onChange={(e) => setDiscount(Number(e.target.value))}
-          />
-        </div>
-
-        {/* TAX 1 */}
-        <div className="summary-row">
-          <label>CGST %</label>
-
-          <input
-            type="number"
-            value={tax1}
-            onChange={(e) => setTax1(Number(e.target.value))}
-          />
-        </div>
-
-        {/* TAX 2 */}
-        <div className="summary-row">
-          <label>SGST %</label>
-
-          <input
-            type="number"
-            value={tax2}
-            onChange={(e) => setTax2(Number(e.target.value))}
-          />
-        </div>
-
-        {/* TOTALS */}
-
-        <div className="total-row">
-          <span>Subtotal:</span>
-          <span>₹{subtotal.toFixed(2)}</span>
-        </div>
-
-        <div className="total-row">
-          <span>Discount:</span>
-          <span>- ₹{discountAmount.toFixed(2)}</span>
-        </div>
-
-        <div className="total-row">
-          <span>CGST:</span>
-          <span>₹{tax1Amount.toFixed(2)}</span>
-        </div>
-
-        <div className="total-row">
-          <span>SGST:</span>
-          <span>₹{tax2Amount.toFixed(2)}</span>
-        </div>
-
-        <div className="grand-total-row">
-          <span>Grand Total:</span>
-          <span>₹{grandTotal.toFixed(2)}</span>
-        </div>
+            {/* EMPTY STATE */}
+            {invoiceItems.length === 0 && (
+              <tr>
+                <td colSpan="5" className="empty-row">
+                  No products added yet
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
-      {/* GRAND TOTAL */}
-      <div className="grand-total">
-        <h3>Grand Total: ₹{grandTotal}</h3>
-      </div>
+      {/* SUMMARY */}
+      {invoiceItems.length > 0 && (
+        <InvoiceAddOns
+          subtotal={subtotal}
+          discount={discount}
+          setDiscount={setDiscount}
+          tax1={tax1}
+          setTax1={setTax1}
+          tax2={tax2}
+          setTax2={setTax2}
+          discountAmount={discountAmount}
+          tax1Amount={tax1Amount}
+          tax2Amount={tax2Amount}
+          grandTotal={grandTotal}
+        />
+      )}
+
+      {invoiceItems.length > 0 && (
+        <SaveInvoice
+          customerId={1}
+          invoiceItems={invoiceItems}
+          discount={discount}
+          tax1={tax1}
+          tax2={tax2}
+          grandTotal={grandTotal}
+          clearInvoice={clearInvoice}
+        />
+      )}
     </div>
   );
 }

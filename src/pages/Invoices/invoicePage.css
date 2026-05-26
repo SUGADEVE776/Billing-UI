@@ -1,279 +1,277 @@
 .invoice-container {
-    padding: 24px;
-    background-color: #f5f7fb;
-    min-height: 100vh;
-  }
-  
-  /* ================= SEARCH ================= */
-  
-  .search-section {
-    position: relative;
-    width: 320px;
-    margin-bottom: 24px;
-  }
-  
-  .search-section input {
-    width: 100%;
-  
-    padding: 12px 14px;
-  
-    background-color: white;
-    color: black;
-  
-    border: 1px solid #d1d5db;
-    border-radius: 10px;
-  
-    font-size: 15px;
-  
-    outline: none;
-  
-    transition: 0.3s ease;
-  }
-  
-  .search-section input:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-  }
-  
-  /* SEARCH DROPDOWN */
-  
-  .search-results {
-    position: absolute;
-  
-    width: 100%;
-  
-    background: white;
-  
-    border: 1px solid #d1d5db;
-  
-    border-radius: 10px;
-  
-    margin-top: 6px;
-  
-    max-height: 220px;
-  
-    overflow-y: auto;
-  
-    z-index: 100;
-  
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  }
-  
-  .search-item {
-    padding: 12px 14px;
-  
-    cursor: pointer;
-  
-    color: black;
-  
-    transition: 0.2s ease;
-  }
-  
-  .search-item:hover {
-    background-color: #eff6ff;
-    color: #2563eb;
-  }
-  
-  /* ================= TABLE ================= */
-  
-  .invoice-table {
-    width: 100%;
-  
-    border-collapse: collapse;
-  
-    background-color: white;
-  
-    border-radius: 12px;
-  
-    overflow: hidden;
-  
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-  }
-  
-  .invoice-table thead {
-    background-color: #f9fafb;
-  }
-  
-  .invoice-table th {
-    padding: 14px;
-  
-    text-align: center;
-  
-    color: #111827;
-  
-    font-size: 15px;
-    font-weight: 600;
-  
-    border-bottom: 1px solid #e5e7eb;
-  }
-  
-  .invoice-table td {
-    padding: 14px;
-  
-    text-align: center;
-  
-    color: black;
-  
-    border-bottom: 1px solid #f1f5f9;
-  }
-  
-  /* ROW HOVER */
-  
-  .invoice-table tbody tr:hover {
-    background-color: #f8fafc;
-  }
-  
-  /* ================= QUANTITY INPUT ================= */
-  
-  .qty-input {
-    width: 80px;
-  
-    padding: 8px 10px;
-  
-    background-color: white;
-    color: black;
-  
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-  
-    text-align: center;
-  
-    outline: none;
-  
-    transition: 0.3s ease;
-  }
-  
-  .qty-input:focus {
-    border-color: #2563eb;
-  }
-  
-  /* ================= REMOVE BUTTON ================= */
-  
-  .remove-btn {
-    padding: 8px 14px;
-  
-    border: none;
-    border-radius: 8px;
-  
-    background-color: #dc2626;
-    color: white;
-  
-    font-size: 14px;
-    font-weight: 500;
-  
-    cursor: pointer;
-  
-    transition: 0.3s ease;
-  }
-  
-  .remove-btn:hover {
-    background-color: #b91c1c;
-    transform: translateY(-1px);
-  }
-  
-  /* ================= SUMMARY ================= */
-  
-  .invoice-summary {
-    width: 380px;
-  
-    margin-left: auto;
-    margin-top: 30px;
-  
-    padding: 24px;
-  
-    border: 1px solid #e5e7eb;
-    border-radius: 14px;
-  
-    background: white;
-  
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  }
-  
-  /* SUMMARY INPUT ROW */
-  
-  .summary-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  
-    margin-bottom: 16px;
-  
-    color: black;
-  }
-  
-  .summary-row label {
-    font-size: 15px;
-    font-weight: 500;
-  
-    color: #111827;
-  }
-  
-  .summary-row input {
-    width: 110px;
-  
-    padding: 9px 10px;
-  
-    background-color: white;
-    color: black;
-  
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-  
-    outline: none;
-  
-    transition: 0.3s ease;
-  }
-  
-  .summary-row input:focus {
-    border-color: #2563eb;
-  }
-  
-  /* ================= TOTALS ================= */
-  
-  .total-row,
-  .grand-total-row {
-    display: flex;
-    justify-content: space-between;
-  
-    margin-top: 14px;
-  
-    color: black;
-  }
-  
-  .total-row span {
-    color: #374151;
-  }
-  
-  .grand-total-row {
-    margin-top: 24px;
-  
-    padding-top: 18px;
-  
-    border-top: 2px dashed #d1d5db;
-  
-    font-size: 20px;
-    font-weight: bold;
-  
-    color: #111827;
-  }
-  
-  /* ================= EMPTY TABLE ================= */
-  
-  .empty-row {
-    padding: 20px;
-  
-    text-align: center;
-  
-    color: #6b7280;
-  }
-  
-  /* ================= SCROLLBAR ================= */
-  
-  .search-results::-webkit-scrollbar {
-    width: 6px;
-  }
-  
-  .search-results::-webkit-scrollbar-thumb {
-    background-color: #cbd5e1;
-    border-radius: 10px;
-  }
+  padding: 24px;
+  background-color: #f5f7fb;
+  min-height: 100vh;
+}
+
+/* ================= HEADER ================= */
+
+.invoice-header {
+  margin-bottom: 24px;
+}
+
+.invoice-header h2 {
+  color: #111827;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+/* ================= TABLE ================= */
+
+.invoice-table-wrapper {
+  background: white;
+  border-radius: 14px;
+  overflow: visible;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoice-table thead {
+  background-color: #f9fafb;
+}
+
+.invoice-table th {
+  padding: 16px;
+  text-align: center;
+  color: #111827;
+  font-size: 15px;
+  font-weight: 600;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.invoice-table td {
+  padding: 16px;
+  text-align: center;
+  color: black;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.invoice-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* ================= PRODUCT ================= */
+
+.product-name {
+  font-weight: 500;
+  text-align: left;
+}
+
+.price-cell {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* ================= QUANTITY ================= */
+
+.qty-input {
+  width: 80px;
+  padding: 8px 10px;
+  background-color: white;
+  color: black;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  text-align: center;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.qty-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ================= REMOVE BUTTON ================= */
+
+.remove-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #dc2626;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.remove-btn:hover {
+  background-color: #b91c1c;
+  transform: translateY(-1px);
+}
+
+/* ================= ADD ITEM ================= */
+
+.add-item-row td {
+  background-color: #fafafa;
+}
+
+.table-search-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.add-item-label {
+  display: block;
+  text-align: left;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.table-search-input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: white;
+  color: black;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: 0.3s ease;
+}
+
+.table-search-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ================= SEARCH RESULTS ================= */
+
+.search-results {
+  position: absolute;
+  top: 75px;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.search-item {
+  padding: 14px;
+  cursor: pointer;
+  color: black;
+  border-bottom: 1px solid #f1f5f9;
+  transition: 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-item:last-child {
+  border-bottom: none;
+}
+
+.search-item:hover {
+  background: #eff6ff;
+}
+
+.search-product-name {
+  font-weight: 500;
+  color: #111827;
+}
+
+.search-product-price {
+  font-weight: 600;
+  color: #2563eb;
+}
+
+.no-results {
+  padding: 16px;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* ================= SUMMARY ================= */
+
+.invoice-summary {
+  width: 380px;
+  margin-left: auto;
+  margin-top: 30px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  color: black;
+}
+
+.summary-row label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #111827;
+}
+
+.summary-row input {
+  width: 110px;
+  padding: 9px 10px;
+  background-color: white;
+  color: black;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.summary-row input:focus {
+  border-color: #2563eb;
+}
+
+.total-row,
+.grand-total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+  color: black;
+}
+
+.total-row span {
+  color: #374151;
+}
+
+.grand-total-row {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 2px dashed #d1d5db;
+  font-size: 20px;
+  font-weight: bold;
+  color: #111827;
+}
+
+/* ================= EMPTY ================= */
+
+.empty-row {
+  padding: 30px !important;
+  text-align: center;
+  color: #6b7280 !important;
+  font-size: 15px;
+}
+
+/* ================= SCROLLBAR ================= */
+
+.search-results::-webkit-scrollbar {
+  width: 6px;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 10px;
+}

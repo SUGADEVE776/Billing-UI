@@ -134,3 +134,50 @@
 
   margin-bottom: 20px;
 }
+
+.pagination {
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 16px;
+
+  margin-top: 24px;
+}
+
+.pagination button {
+
+  padding: 10px 18px;
+
+  border: none;
+  border-radius: 8px;
+
+  background-color: #2563eb;
+  color: white;
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.pagination button:hover {
+
+  background-color: #1d4ed8;
+}
+
+.pagination button:disabled {
+
+  background-color: #9ca3af;
+
+  cursor: not-allowed;
+}
+
+.pagination span {
+
+  font-size: 15px;
+  font-weight: 500;
+
+  color: #111827;
+}
