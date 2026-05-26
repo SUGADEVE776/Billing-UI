@@ -36,7 +36,7 @@ function AddCustomerModal({ open, onClose }) {
             const token = localStorage.getItem("access_token");
 
             const response = await fetch(
-                `${API_BASE_URL}api/v1/customers`,
+                `${API_BASE_URL}api/v1/customer/add`,
                 {
                     method: "POST",
 
